@@ -3,15 +3,17 @@ using UnityEngine.UI;
 
 public class SliderHealthView : HealthView
 {
-    [SerializeField] protected Slider Slider;
+    [SerializeField] private Slider _slider;
+
+    protected Slider Slider => _slider;
 
     private void Start()
     {
-        Slider.value = CurrentValue / MaxValue;
+        _slider.value = MaxValue / MaxValue;
     }
 
     protected override void ChangeValue(float value)
     {
-        Slider.value = value / MaxValue;
+        _slider.value = value / MaxValue;
     }
 }

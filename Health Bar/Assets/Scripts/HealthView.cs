@@ -5,12 +5,10 @@ public abstract class HealthView : MonoBehaviour
     [SerializeField] private Health _health;
 
     protected float MaxValue;
-    protected float CurrentValue;
 
     private void Awake()
     {
         MaxValue = _health.MaxValue;
-        CurrentValue = MaxValue;
     }
 
     private void OnEnable()

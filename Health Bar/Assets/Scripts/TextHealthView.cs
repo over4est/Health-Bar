@@ -9,7 +9,7 @@ public class TextHealthView : HealthView
 
     private void Start()
     {
-        _text.text = CurrentValue + _separator + MaxValue;
+        _text.text = MaxValue + _separator + MaxValue;
     }
 
     protected override void ChangeValue(float value)
