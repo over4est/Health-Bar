@@ -1,51 +1,34 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class SmoothlySliderHealthView : MonoBehaviour
+public class SmoothlySliderHealthView : SliderHealthView
 {
-    [SerializeField] private Slider _slider;
-    [SerializeField] private Health _health;
-    [SerializeField] private float _changeDelay;
-    [SerializeField] private float _delta;
+    [SerializeField] private float _changeDuration;
 
     private Coroutine _corutine;
-    private WaitForSeconds _wait;
 
-    private void OnEnable()
-    {
-        _health.ValueChanged += ChangeValue;
-    }
-
-    private void OnDisable()
-    {
-        _health.ValueChanged -= ChangeValue;
-    }
-
-    private void Start()
-    {
-        _wait = new WaitForSeconds(_changeDelay);
-        _slider.maxValue = _health.MaxValue;
-        _slider.value = _slider.maxValue;
-    }
-
-    private void ChangeValue(float value)
+    protected override void ChangeValue(float value)
     {
         if (_corutine != null)
-        {
             StopCoroutine(_corutine);
-        }
 
         _corutine = StartCoroutine(SmoothlyChange(value));
     }
 
     private IEnumerator SmoothlyChange(float value)
     {
-        while (enabled)
-        {
-            yield return _wait;
+        float startValue = Slider.value;
+        float targetValue = value / MaxValue;
+        float timeElapsed = 0f;
 
-            _slider.value = Mathf.MoveTowards(_slider.value, value, _delta);
+        while (timeElapsed < _changeDuration)
+        {
+            float delta = timeElapsed / _changeDuration;
+
+            Slider.value = Mathf.Lerp(startValue, targetValue, delta);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
         }
     }
 }
